@@ -13,3 +13,6 @@ router.post("/me", protectRoute, getCurrentUser)
 router.put("/profile", protectRoute, updateProfile)
 
 router.post("/follow/:targetUserId", protectRoute, followUser)
+
+
+export default router
