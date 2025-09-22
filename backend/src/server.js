@@ -1,11 +1,32 @@
-import express from "express"
-import { ENV } from "./config/env"
-import { connectDB } from "./config/db"
+import express from "express";
+import { ENV } from "./config/env.js";
+import { connectDB } from "./config/db.js";
+import cors from "cors"
+import {clerkMiddleware} from "@clerk/express"
+import { userRoutes } from "./routes/user.route.js"
 
-const app = express()
+const app = express();
 
-connectDB()
+app.use(cors())
 
-app.get("/", (req, res) => res.send("hello for the server!"))
+app.use(express.json())
 
-app.listen(ENV.PORT, () => console.log("Server is up and running"))
+app.use(clerkMiddleware())
+app.get("/", (req, res) => res.send("hello for the server!"));
+
+app.use("/api/users", userRoutes)
+
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    app.listen(ENV.PORT, () => {
+      console.log(`🚀 Server running on port ${ENV.PORT}`);
+    });
+  } catch (error) {
+    console.log(error, "--Failed to start server");
+    process.exit(1);
+  }
+};
+
+startServer()

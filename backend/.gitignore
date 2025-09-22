@@ -42,3 +42,7 @@ app-example
 # generated native folders
 /ios
 /android
+
+# macOS system files
+.DS_Store
+**/.DS_Store
